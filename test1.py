@@ -20,21 +20,19 @@ NewLineReceived = 0
 InputStringcache = ''
 pwm = Adafruit_PCA9685.PCA9685()
 
-
-LED8=8
-LED9=9
-LED10=10
-LED11=11
-
-LINA=12
-LINB=13
-RLNA=14
-RLNB=15
-
-LED0=0
-LED1=1
-LED2=2
-LED3=3
+#电机驱动接口定义
+LU1=9
+LU2=8
+RU1=11
+RU2=10
+LD1=14
+LD2=15
+RD1=12
+RD2=13
+#舵机接口定义
+Act1=0
+Act2=1
+Act3=2
 
 SERVO=7
 InputString = ''
@@ -55,88 +53,89 @@ back_car = '2'  #按键后
 left_car = '3'  #按键左
 right_car = '4' #按键右
 stop_car = '0'  #按键停
+turn_clockwise = '5' #按键顺时针
+turn_anticlockwise = '6' #按键逆时针
 
 pwm.set_pwm_freq(50)
 
 #最大频率是4096，4096时达到最高速度，1024，2048，3072
+
 #向前，两个舵机向相同方向旋转
+#四个轮子都向前转时，轴向速度相互抵消，只剩下向前的速度，则小车向前，后退同理
 
+def straight_car(Speed):
+	pwm.set_pwm(LU1,0,Speed)
+	pwm.set_pwm(LU2,0,0)
+	pwm.set_pwm(RU1,0,Speed)
+	pwm.set_pwm(RU2,0,0)
+	pwm.set_pwm(LD1,0,Speed)
+	pwm.set_pwm(LD2,0,0)
+	pwm.set_pwm(RD1,0,Speed)
+	pwm.set_pwm(RD2,0,0)
 
-def back(Speed):
-    pwm.set_pwm(LED8,0,Speed)
-    pwm.set_pwm(LED9,0,0)
-    pwm.set_pwm(LED11,0,Speed)
-    pwm.set_pwm(LED10,0,0)
-    pwm.set_pwm(LED0,0,Speed)
-    pwm.set_pwm(LED1,0,0)
-    pwm.set_pwm(LED3,0,Speed)
-    pwm.set_pwm(LED2,0,0)
-    pwm.set_pwm(LINA,0,Speed)
-    pwm.set_pwm(LINB,0,0)
-    pwm.set_pwm(RLNB,0,Speed)
-    pwm.set_pwm(RLNA,0,0)
+def back_car(Speed):
+	pwm.set_pwm(LU2,0,Speed)
+	pwm.set_pwm(LU1,0,0)
+	pwm.set_pwm(RU2,0,Speed)
+	pwm.set_pwm(RU1,0,0)
+	pwm.set_pwm(LD2,0,Speed)
+	pwm.set_pwm(LD1,0,0)
+	pwm.set_pwm(RD2,0,Speed)
+	pwm.set_pwm(RD1,0,0)	
 
+#而A轮正转，B轮反转的时候，向前向后的速度就会相互抵消，只剩下向左的速度。向右平移同理.BAAB
+def left_car(Speed):
+	pwm.set_pwm(LU2,0,Speed)
+	pwm.set_pwm(LU1,0,0)
+	pwm.set_pwm(RU1,0,Speed)
+	pwm.set_pwm(RU2,0,0)
+	pwm.set_pwm(LD1,0,Speed)
+	pwm.set_pwm(LD2,0,0)
+	pwm.set_pwm(RD2,0,Speed)
+	pwm.set_pwm(RD1,0,0)
+	
+def right_car(Speed):
+	pwm.set_pwm(LU1,0,Speed)
+	pwm.set_pwm(LU2,0,0)
+	pwm.set_pwm(RU2,0,Speed)
+	pwm.set_pwm(RU1,0,0)
+	pwm.set_pwm(LD2,0,Speed)
+	pwm.set_pwm(LD1,0,0)
+	pwm.set_pwm(RD1,0,Speed)
+	pwm.set_pwm(RD2,0,0)
 
-def run(Speed):
-    pwm.set_pwm(LED8,0,0)
-    pwm.set_pwm(LED9,0,Speed)
-    pwm.set_pwm(LED11,0,0)
-    pwm.set_pwm(LED10,0,Speed)
-    pwm.set_pwm(LED0,0,0)
-    pwm.set_pwm(LED1,0,Speed)
-    pwm.set_pwm(LED3,0,0)
-    pwm.set_pwm(LED2,0,Speed)
-    pwm.set_pwm(LINA,0,0)
-    pwm.set_pwm(LINB,0,Speed)
-    pwm.set_pwm(RLNB,0,0)
-    pwm.set_pwm(RLNA,0,Speed)
+#底盘左侧轮子正转右侧轮子反转，实现底盘向右旋转，即顺时针旋转。逆时针旋转同理。左右左右
+def turnleft_car(Speed):
+	pwm.set_pwm(LU2,0,Speed)
+	pwm.set_pwm(LU1,0,0)
+	pwm.set_pwm(RU1,0,Speed)
+	pwm.set_pwm(RU2,0,0)
+	pwm.set_pwm(LD2,0,Speed)
+	pwm.set_pwm(LD1,0,0)
+	pwm.set_pwm(RD1,0,Speed)
+	pwm.set_pwm(RD2,0,0)
+	
+def turnright_car(Speed):
+	pwm.set_pwm(LU1,0,Speed)
+	pwm.set_pwm(LU2,0,0)
+	pwm.set_pwm(RU2,0,Speed)
+	pwm.set_pwm(RU1,0,0)
+	pwm.set_pwm(LD1,0,Speed)
+	pwm.set_pwm(LD2,0,0)
+	pwm.set_pwm(RD2,0,Speed)
+	pwm.set_pwm(RD1,0,0)
 
 
 def brake():
-    pwm.set_pwm(LED8,0,0)
-    pwm.set_pwm(LED9,0,0)
-    pwm.set_pwm(LED11,0,0)
-    pwm.set_pwm(LED10,0,0)
-    pwm.set_pwm(LED0,0,0)
-    pwm.set_pwm(LED1,0,0)
-    pwm.set_pwm(LED3,0,0)
-    pwm.set_pwm(LED2,0,0)
-    pwm.set_pwm(LINA,0,0)
-    pwm.set_pwm(LINB,0,0)
-    pwm.set_pwm(RLNB,0,0)
-    pwm.set_pwm(RLNA,0,0)
-
-
-def left(Speed):
-    pwm.set_pwm(LED8,0,Speed)
-    pwm.set_pwm(LED9,0,0)
-    pwm.set_pwm(LED11,0,0)
-    pwm.set_pwm(LED10,0,Speed)
-    pwm.set_pwm(LED0,0,Speed)
-    pwm.set_pwm(LED1,0,0)
-    pwm.set_pwm(LED3,0,0)
-    pwm.set_pwm(LED2,0,Speed)
-    pwm.set_pwm(LINA,0,Speed)
-    pwm.set_pwm(LINB,0,0)
-    pwm.set_pwm(RLNB,0,0)
-    pwm.set_pwm(RLNA,0,Speed)
-
-
-def right(Speed):
-    pwm.set_pwm(LED8,0,0)
-    pwm.set_pwm(LED9,0,Speed)
-    pwm.set_pwm(LED11,0,Speed)
-    pwm.set_pwm(LED10,0,0)
-    pwm.set_pwm(LED0,0,0)
-    pwm.set_pwm(LED1,0,Speed)
-    pwm.set_pwm(LED3,0,Speed)
-    pwm.set_pwm(LED2,0,0)
-    pwm.set_pwm(LINA,0,0)
-    pwm.set_pwm(LINB,0,Speed)
-    pwm.set_pwm(RLNB,0,Speed)
-    pwm.set_pwm(RLNA,0,0)
-
-    
+	pwm.set_pwm(LU1,0,0)
+	pwm.set_pwm(LU2,0,0)
+	pwm.set_pwm(RU2,0,0)
+	pwm.set_pwm(RU1,0,0)
+	pwm.set_pwm(LD2,0,0)
+	pwm.set_pwm(LD1,0,0)
+	pwm.set_pwm(RD1,0,0)
+	pwm.set_pwm(RD2,0,0)
+	
 def set_servo_pulse(channel, pulse):
     pulse_length = 1000000    # 1,000,000 us per second
     pulse_length //= 60       # 60 Hz
