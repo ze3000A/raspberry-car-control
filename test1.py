@@ -1,10 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 10 07:51:54 
-Shenzhen Yahboom Tech
-
-@author: LONGFU SUN
+Created on 2020.10.2   08:00
+@author:XHR
 """
 
 from __future__ import division
