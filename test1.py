@@ -83,7 +83,7 @@ def back_car(Speed):
 	pwm.set_pwm(RD2,0,Speed)
 	pwm.set_pwm(RD1,0,0)	
 
-#而A轮正转，B轮反转的时候，向前向后的速度就会相互抵消，只剩下向左的速度。向右平移同理.BAAB
+#而左上方B轮反转，右下方A轮反转的时候，合速度为向左的速度，则小车向左，向右平移同理
 def left_car(Speed):
 	pwm.set_pwm(LU2,0,Speed)
 	pwm.set_pwm(LU1,0,0)
