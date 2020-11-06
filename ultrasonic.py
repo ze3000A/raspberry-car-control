@@ -14,27 +14,40 @@ import time
 def distance():
     try:
         gpio.setmode(gpio.BCM)   #统一设置为bcm编码格式
-	in_pin = 23 #输入口，设置为board上的16
-        gpio.setup(18, gpio.OUT)  #输出口，设置为board上的12
-        gpio.setup(in_pin, gpio.IN)    
-        gpio.output(18, False)   # 先把输出置0
+	trig_pin = 18  #树莓派输出口，设置为board上的12，发送10us的信号使超声波模块工作
+	echo_pin = 23  #输入口，设置为board上的16
+        gpio.setup(trig_pin, gpio.OUT)  
+        gpio.setup(echo_pin, gpio.IN)    
 	
-        while gpio.input(in_pin) == 0:
+	gpio.output(trig_pin, True)   # 把输出置1
+	time.sleep(0.00001)  #10us
+        gpio.output(trig_pin, False)   # 把输出置0
+	
+        while gpio.input(echo_pin) == 0:
             nosig = time.time()
 	
-        while gpio.input(in_pin) == 1:
+        while gpio.input(echo_pin) == 1:
             sig = time.time()
 	
         t1 = sig - nosig
-	distance = t1 / 0.000058   #计数方式，返回值为  xx cm
+	distance = t1 * 17150   #计数方式，假设声波速度343m/s。返回值为  xx cm
         gpio.cleanup()
         return distance
     except:
-        distance = None  #异常处理，统一返回值为100
+        distance = None  #异常处理，读不到就返回None
         gpio.cleanup()
         return distance
 
 if __name__ == "__main__":
-    a=distance()
-    print(a)
+    try:
+        while True:
+            dist = distance()
+            print("Measured Distance = {:.2f} cm".format(dist))
+            time.sleep(1)
+	
+    # Reset by pressing CTRL + C
+    except KeyboardInterrupt:
+        print("Measurement stopped by User")
+        GPIO.cleanup()
+
 
