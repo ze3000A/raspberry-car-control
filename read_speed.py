@@ -2,21 +2,54 @@
 
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)  #使用bcm引脚编号方式
+GPIO.setwarnings(False)  #禁用警告。如果RPi.GRIO检测到一个引脚已经被设置成了非默认值，会有警告信息。
 
- GPIO.setup(24, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #通过18号引脚读取左轮脉冲数据
- GPIO.setup(25, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #通过35号引脚读取右轮脉冲数据
- GPIO.setup(27, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #通过18号引脚读取左轮脉冲数据
- GPIO.setup(28, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #通过35号引脚读取右轮脉冲数据
- counter=0      #左轮脉冲初值
- counter1=0     #右轮脉冲初值
- def my_callback(channel):          #边缘检测回调函数，详情在参见链接中
-     global counter                 #设置为全局变量
-     if GPIO.event_detected(18):        #检测到一个脉冲则脉冲数加1
-         counter=counter+1
- def my_callback1(channel1):            #这里的channel和channel1无须赋确定值，但笔者测试过，不能不写
-     global counter1
-     if GPIO.event_detected(35):
-         counter1=counter1+1
- GPIO.add_event_detect(18,GPIO.RISING,callback=my_callback) #在引脚上添加上升临界值检测再回调
- GPIO.add_event_detect(35,GPIO.RISING,callback=my_callback1)
+lu_pin = 19  #编码器连接引脚定义
+ld_pin = 26
+ru_pin = 16
+rd_pin = 20
 
+GPIO.setup(lu_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #gpio口设置为上拉，输入模式
+GPIO.setup(ld_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)
+GPIO.setup(ru_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)  
+GPIO.setup(rd_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)   
+
+
+'''
+chan_list = [19,26,16,20]  #bcm编号的引脚，对应board引脚的35，37，36，38
+GPIO.setup(chan_list, GPIO.IN,pull_up_down=GPIO.PUD_UP)
+'''
+
+lu_counter=0      #左前轮脉冲初值
+ld_counter=0     #左后轮脉冲初值
+ru_counter=0      #右前轮脉冲初值
+rd_counter=0     #右后轮脉冲初值
+ 
+def my_lu_callback(lu_channel):          #边缘检测回调函数，详情在参见链接中
+ global lu_counter  #设置为全局变量
+ if GPIO.event_detected(lu_pin):        #检测到一个脉冲则脉冲数加1
+  lu_counter++         
+def my_ld_callback(ld_channel):          #边缘检测回调函数，详情在参见链接中
+ global ld_counter                 #设置为全局变量
+ if GPIO.event_detected(ld_pin):        #检测到一个脉冲则脉冲数加1
+  ld_counter++
+def my_ru_callback(ru_channel):          #边缘检测回调函数，详情在参见链接中
+ global ru_counter                 #设置为全局变量
+ if GPIO.event_detected(ru_pin):        #检测到一个脉冲则脉冲数加1
+  ru_counter++
+def my_rd_callback(rd_channel):          #边缘检测回调函数，详情在参见链接中
+ global rd_counter                 #设置为全局变量
+ if GPIO.event_detected(rd_pin):        #检测到一个脉冲则脉冲数加1
+  rd_counter++
+
+GPIO.add_event_detect(lu_pin,GPIO.RISING,callback=my_lu_callback) #在引脚上添加上升临界值检测再回调
+GPIO.add_event_detect(ld_pin,GPIO.RISING,callback=my_ld_callback) #在引脚上添加上升临界值检测再回调
+GPIO.add_event_detect(ru_pin,GPIO.RISING,callback=my_ru_callback) #在引脚上添加上升临界值检测再回调
+GPIO.add_event_detect(rd_pin,GPIO.RISING,callback=my_rd_callback) #在引脚上添加上升临界值检测再回调
+
+
+GPIO.cleanup()   #释放gpio口
+
+def read_io_speed(io_pin):
+ 
