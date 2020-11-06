@@ -34,3 +34,7 @@ def distance():
         gpio.cleanup()
         return distance
 
+if __name__ == "__main__":
+    a=distance()
+    print(a)
+
