@@ -34,7 +34,7 @@ def distance():
         gpio.cleanup()
         return distance
     except:
-        distance = None  #异常处理，读不到就返回None
+        distance = 500  #异常处理，读不到就返回None或者500
         gpio.cleanup()
         return distance
 
