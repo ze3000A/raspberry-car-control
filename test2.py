@@ -143,10 +143,10 @@ def serialEvent(str):
     InputString = ''
     if str=='w':
         straight_car(Car_Speed)
-    if str=='w':
-        straight_car(Car_Speed)
-    if str=='w':
-        straight_car(Car_Speed)
+    if str=='s':
+        doen_car(Car_Speed)
+    if str=='a':
+        left_car(Car_Speed)
     if str=='w':
         straight_car(Car_Speed)
 
@@ -160,3 +160,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         GPIO.cleanup()
+
+	
+	
