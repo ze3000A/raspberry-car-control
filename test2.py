@@ -63,74 +63,100 @@ pwm.set_pwm_freq(50)
 #四个轮子都向前转时，轴向速度相互抵消，只剩下向前的速度，则小车向前，后退同理
 
 def straight_car(Speed):
-	pwm.set_pwm(LU1,0,Speed)
-	pwm.set_pwm(LU2,0,0)
-	pwm.set_pwm(RU1,0,Speed)
-	pwm.set_pwm(RU2,0,0)
-	pwm.set_pwm(LD1,0,Speed)
-	pwm.set_pwm(LD2,0,0)
-	pwm.set_pwm(RD1,0,Speed)
-	pwm.set_pwm(RD2,0,0)
+    pwm.set_pwm(LU1,0,Speed)
+    pwm.set_pwm(LU2,0,0)
+    pwm.set_pwm(RU1,0,Speed)
+    pwm.set_pwm(RU2,0,0)
+    pwm.set_pwm(LD1,0,Speed)
+    pwm.set_pwm(LD2,0,0)
+    pwm.set_pwm(RD1,0,Speed)
+    pwm.set_pwm(RD2,0,0)
 
 def back_car(Speed):
-	pwm.set_pwm(LU2,0,Speed)
-	pwm.set_pwm(LU1,0,0)
-	pwm.set_pwm(RU2,0,Speed)
-	pwm.set_pwm(RU1,0,0)
-	pwm.set_pwm(LD2,0,Speed)
-	pwm.set_pwm(LD1,0,0)
-	pwm.set_pwm(RD2,0,Speed)
-	pwm.set_pwm(RD1,0,0)	
+    pwm.set_pwm(LU2,0,Speed)
+    pwm.set_pwm(LU1,0,0)
+    pwm.set_pwm(RU2,0,Speed)
+    pwm.set_pwm(RU1,0,0)
+    pwm.set_pwm(LD2,0,Speed)
+    pwm.set_pwm(LD1,0,0)
+    pwm.set_pwm(RD2,0,Speed)
+    pwm.set_pwm(RD1,0,0)	
 
 #而左上方B轮反转，右下方A轮反转的时候，合速度为向左的速度，则小车向左，向右平移同理
 def left_car(Speed):
-	pwm.set_pwm(LU2,0,Speed)
-	pwm.set_pwm(LU1,0,0)
-	pwm.set_pwm(RU1,0,Speed)
-	pwm.set_pwm(RU2,0,0)
-	pwm.set_pwm(LD1,0,Speed)
-	pwm.set_pwm(LD2,0,0)
-	pwm.set_pwm(RD2,0,Speed)
-	pwm.set_pwm(RD1,0,0)
+    pwm.set_pwm(LU2,0,Speed)
+    pwm.set_pwm(LU1,0,0)
+    pwm.set_pwm(RU1,0,Speed)
+    pwm.set_pwm(RU2,0,0)
+    pwm.set_pwm(LD1,0,Speed)
+    pwm.set_pwm(LD2,0,0)
+    pwm.set_pwm(RD2,0,Speed)
+    pwm.set_pwm(RD1,0,0)
 	
 def right_car(Speed):
-	pwm.set_pwm(LU1,0,Speed)
-	pwm.set_pwm(LU2,0,0)
-	pwm.set_pwm(RU2,0,Speed)
-	pwm.set_pwm(RU1,0,0)
-	pwm.set_pwm(LD2,0,Speed)
-	pwm.set_pwm(LD1,0,0)
-	pwm.set_pwm(RD1,0,Speed)
-	pwm.set_pwm(RD2,0,0)
+    pwm.set_pwm(LU1,0,Speed)
+    pwm.set_pwm(LU2,0,0)
+    pwm.set_pwm(RU2,0,Speed)
+    pwm.set_pwm(RU1,0,0)
+    pwm.set_pwm(LD2,0,Speed)
+    pwm.set_pwm(LD1,0,0)
+    pwm.set_pwm(RD1,0,Speed)
+    pwm.set_pwm(RD2,0,0)
 
 #底盘左侧轮子正转右侧轮子反转，实现底盘向右旋转，即顺时针旋转。逆时针旋转同理。左右左右
 def turnleft_car(Speed):
-	pwm.set_pwm(LU2,0,Speed)
-	pwm.set_pwm(LU1,0,0)
-	pwm.set_pwm(RU1,0,Speed)
-	pwm.set_pwm(RU2,0,0)
-	pwm.set_pwm(LD2,0,Speed)
-	pwm.set_pwm(LD1,0,0)
-	pwm.set_pwm(RD1,0,Speed)
-	pwm.set_pwm(RD2,0,0)
+    pwm.set_pwm(LU2,0,Speed)
+    pwm.set_pwm(LU1,0,0)
+    pwm.set_pwm(RU1,0,Speed)
+    pwm.set_pwm(RU2,0,0)
+    pwm.set_pwm(LD2,0,Speed)
+    pwm.set_pwm(LD1,0,0)
+    pwm.set_pwm(RD1,0,Speed)
+    pwm.set_pwm(RD2,0,0)
 	
 def turnright_car(Speed):
-	pwm.set_pwm(LU1,0,Speed)
-	pwm.set_pwm(LU2,0,0)
-	pwm.set_pwm(RU2,0,Speed)
-	pwm.set_pwm(RU1,0,0)
-	pwm.set_pwm(LD1,0,Speed)
-	pwm.set_pwm(LD2,0,0)
-	pwm.set_pwm(RD2,0,Speed)
-	pwm.set_pwm(RD1,0,0)
-
+    pwm.set_pwm(LU1,0,Speed)
+    pwm.set_pwm(LU2,0,0)
+    pwm.set_pwm(RU2,0,Speed)
+    pwm.set_pwm(RU1,0,0)
+    pwm.set_pwm(LD1,0,Speed)
+    pwm.set_pwm(LD2,0,0)
+    pwm.set_pwm(RD2,0,Speed)
+    pwm.set_pwm(RD1,0,0)
 
 def brake():
-	pwm.set_pwm(LU1,0,0)
-	pwm.set_pwm(LU2,0,0)
-	pwm.set_pwm(RU2,0,0)
-	pwm.set_pwm(RU1,0,0)
-	pwm.set_pwm(LD2,0,0)
-	pwm.set_pwm(LD1,0,0)
-	pwm.set_pwm(RD1,0,0)
-	pwm.set_pwm(RD2,0,0)
+    pwm.set_pwm(LU1,0,0)
+    pwm.set_pwm(LU2,0,0)
+    pwm.set_pwm(RU2,0,0)
+    pwm.set_pwm(RU1,0,0)
+    pwm.set_pwm(LD2,0,0)
+    pwm.set_pwm(LD1,0,0)
+    pwm.set_pwm(RD1,0,0)
+    pwm.set_pwm(RD2,0,0)
+	
+	
+def serialEvent(str):
+    global InputString
+    global InputStringcache
+    global StartBit
+    global NewLineReceived
+    InputString = ''
+    if str=='w':
+        straight_car(Car_Speed)
+    if str=='w':
+        straight_car(Car_Speed)
+    if str=='w':
+        straight_car(Car_Speed)
+    if str=='w':
+        straight_car(Car_Speed)
+
+if __name__ == "__main__":
+    try:
+        while True:
+            str = input('请输入：')
+            time.sleep(1)
+	
+    # Reset by pressing CTRL + C
+    except KeyboardInterrupt:
+        print("Measurement stopped by User")
+        GPIO.cleanup()
