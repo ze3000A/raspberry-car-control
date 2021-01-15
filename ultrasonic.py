@@ -24,10 +24,12 @@ def distance():
         gpio.output(trig_pin, False)   # 把输出置0
 	
         while gpio.input(echo_pin) == 0:
-            nosig = time.time()
+	    pase
+        nosig = time.time()
 	
         while gpio.input(echo_pin) == 1:
-            sig = time.time()
+	    pase
+        sig = time.time()
 	
         t1 = sig - nosig
 	distance = t1 * 17150   #计数方式，假设声波速度343m/s。返回值为  xx cm
