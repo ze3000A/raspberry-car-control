@@ -8,25 +8,26 @@ Created on 2020.11.08    11:29
 
 import RPi.GPIO as GPIO
 
+global lu_counter  #设置为全局变量
+global ld_counter  #设置为全局变
+global ru_counter  #设置为全局变量
+global rd_counter  #设置为全局变量
+
 def my_lu_callback(lu_channel):
-    global lu_counter  #设置为全局变量
     if GPIO.event_detected(lu_pin):        #检测到一个脉冲则脉冲数加1
-        lu_counter++ 
+        lu_counter+=1 
 
 def my_ld_callback(ld_channel):
-    global ld_counter  #设置为全局变量
     if GPIO.event_detected(ld_pin):        #检测到一个脉冲则脉冲数加1
-        ld_counter++ 
+        ld_counter+=1
 
 def my_ru_callback(ru_channel):
-    global ru_counter  #设置为全局变量
     if GPIO.event_detected(ru_pin):        #检测到一个脉冲则脉冲数加1
-        ru_counter++ 
+        ru_counter+=1
 
 def my_rd_callback(rd_channel):
-    global rd_counter  #设置为全局变量
     if GPIO.event_detected(rd_pin):        #检测到一个脉冲则脉冲数加1
-        rd_counter++ 
+        rd_counter+=1
 
 def readspeed():
     '''
