@@ -71,7 +71,7 @@ if __name__ == "__main__":
     try:
         while True:
             speed = readspeed()
-            print("Measured Distance = {:.2f} cm".format(dist))
+            print(lu_counter，ld_counter,ru_counter,rd_counter)
             time.sleep(1)
 	
     # Reset by pressing CTRL + C
