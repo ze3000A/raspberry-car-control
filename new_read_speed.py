@@ -8,10 +8,10 @@ Created on 2020.11.08    11:29
 
 import RPi.GPIO as GPIO
 
-global lu_counter  #设置为全局变量
-global ld_counter  #设置为全局变
-global ru_counter  #设置为全局变量
-global rd_counter  #设置为全局变量
+global lu_counter=0  #设置为全局变量
+global ld_counter=0  #设置为全局变
+global ru_counter=0  #设置为全局变量
+global rd_counter=0  #设置为全局变量
 
 def my_lu_callback(lu_channel):
     if GPIO.event_detected(lu_pin):        #检测到一个脉冲则脉冲数加1
@@ -70,6 +70,7 @@ def readspeed():
 if __name__ == "__main__":
     try:
         while True:
+            globle lu_counter=ld_counter=ru_counter=rd_counter=0
             speed = readspeed()
             print(lu_counter，ld_counter,ru_counter,rd_counter)
             time.sleep(1)
