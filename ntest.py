@@ -75,7 +75,7 @@ def thread1_pid_control():
     run_flag=1
     while(run_flag):
         speed=readspeed()
-	    run_flag=int(input('\n input 1 start next exam ,input 0 to shut down'))
+        run_flag=int(input('\n input 1 start next exam ,input 0 to shut down'))
 
 if __name__ == "__main__":
     lu_pin = 19  #编码器连接引脚定义
@@ -85,11 +85,11 @@ if __name__ == "__main__":
     thread1 = threading.Thread(target = thread1_pid_control, args = ())
 
     try:
-	    thread1.start()
+        thread1.start()
         while True:
-		    thread1.join()
+            thread1.join()
             print(" return main  thread")
-			time.sleep(10)
+            time.sleep(10)
             #print(lu_counter，ld_counter,ru_counter,rd_counter)
 	
     # Reset by pressing CTRL + C
