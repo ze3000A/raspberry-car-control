@@ -254,7 +254,7 @@ def serialEvent(str,Car_Speed):
             print("Measured Distance = {:.2f} cm".format(dist))
         else:
             print("distance measure out of range")
-    elif str=='c':
+    elif str=='v':
         run_flag = 1-run_flag
     else:
         print('no car command')
