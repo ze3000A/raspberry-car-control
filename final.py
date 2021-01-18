@@ -47,6 +47,7 @@ rd_counter = 0
 
 #状态值定义
 run_flag = 1  #用于控制线程
+pre_str = ''
 
 '''
 
@@ -266,10 +267,14 @@ def serialEvent(str,Car_Speed):
         print('no steering command')
 
 def thread1_pid_control():
+    global run_flag
     while(run_flag):
         speed=readspeed()
         
 def thread2_keyboard():
+    global run_flag
+    global Car_Speed
+    global pre_str
     while(run_flag):
         in_str = raw_input('请输入控制指令：')
         #print(in_str,' direction recevied')
