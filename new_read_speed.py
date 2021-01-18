@@ -10,18 +10,22 @@ import RPi.GPIO as GPIO
 import time
 
 def my_lu_callback(lu_channel):
+    global lu_counter
     if GPIO.event_detected(lu_pin):        #检测到一个脉冲则脉冲数加1
         lu_counter+=1 
 
 def my_ld_callback(ld_channel):
+    global ld_counter
     if GPIO.event_detected(ld_pin):        #检测到一个脉冲则脉冲数加1
         ld_counter+=1
 
 def my_ru_callback(ru_channel):
+    global ru_counter
     if GPIO.event_detected(ru_pin):        #检测到一个脉冲则脉冲数加1
         ru_counter+=1
 
 def my_rd_callback(rd_channel):
+    global rd_counter
     if GPIO.event_detected(rd_pin):        #检测到一个脉冲则脉冲数加1
         rd_counter+=1
 
@@ -35,10 +39,6 @@ def readspeed():
     GPIO.setmode(GPIO.BCM)  #使用bcm引脚编号方式
     GPIO.setwarnings(False)  #禁用警告。如果RPi.GRIO检测到一个引脚已经被设置成了非默认值，会有警告信息。
 
-    lu_pin = 19  #编码器连接引脚定义
-    ld_pin = 26
-    ru_pin = 16
-    rd_pin = 20
     
     GPIO.setup(lu_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)   #gpio口设置为上拉，输入模式
     GPIO.setup(ld_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)
@@ -49,6 +49,11 @@ def readspeed():
     chan_list = [19,26,16,20]  #bcm编号的引脚，对应board引脚的35，37，36，38
     GPIO.setup(chan_list, GPIO.IN,pull_up_down=GPIO.PUD_UP)
     '''
+    
+    global lu_counter
+    global ld_counter
+    global ru_counter
+    global rd_counter
     
     lu_counter=0      #左前轮脉冲初值
     ld_counter=0     #左后轮脉冲初值
@@ -66,6 +71,12 @@ def readspeed():
     return 0
 
 if __name__ == "__main__":
+    lu_pin = 19  #编码器连接引脚定义
+    ld_pin = 26
+    ru_pin = 16
+    rd_pin = 20
+
+
     try:
         while True:
             speed = readspeed()
