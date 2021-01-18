@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on 2021.1.18    17:27
-zui zhong de
+汇总
 @author: XHR
 """
 
@@ -13,6 +13,7 @@ import serial
 import string
 import RPi.GPIO as GPIO
 from ultrasonic import *
+import threading
 
 CarSpeedControl = 2000
 g_CarState = 0
@@ -44,7 +45,12 @@ ld_counter = 0
 ru_counter = 0
 rd_counter = 0 
 
+#状态值定义
+run_flag = 1  #用于控制线程
+
 '''
+
+
 #状态值定义
 enSTOP = 0
 enRUN =1
@@ -180,24 +186,21 @@ def set_servo_angle(channel,angle):
     print('steering',channel,' had worked,the angle is',angle,' degree')
 
 def my_lu_callback(lu_channel):
-    global lu_counter
     if GPIO.event_detected(lu_pin):        #检测到一个脉冲则脉冲数加1
         lu_counter+=1 
 
 def my_ld_callback(ld_channel):
-    global ld_counter
     if GPIO.event_detected(ld_pin):        #检测到一个脉冲则脉冲数加1
         ld_counter+=1
 
 def my_ru_callback(ru_channel):
-    global ru_counter
     if GPIO.event_detected(ru_pin):        #检测到一个脉冲则脉冲数加1
         ru_counter+=1
 
 def my_rd_callback(rd_channel):
-    global rd_counter
     if GPIO.event_detected(rd_pin):        #检测到一个脉冲则脉冲数加1
         rd_counter+=1
+        
 def readspeed():
     '''
         GPIO.setwarnings(False)  #禁用警告。如果RPi.GRIO检测到一个引脚已经被设置成了非默认值，会有警告信息。
@@ -214,11 +217,6 @@ def readspeed():
     GPIO.setup(ru_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)  
     GPIO.setup(rd_pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)   
     
-    '''
-    chan_list = [19,26,16,20]  #bcm编号的引脚，对应board引脚的35，37，36，38
-    GPIO.setup(chan_list, GPIO.IN,pull_up_down=GPIO.PUD_UP)
-    '''
-    
     lu_counter=0      #左前轮脉冲初值
     ld_counter=0     #左后轮脉冲初值
     ru_counter=0      #右前轮脉冲初值
@@ -229,10 +227,11 @@ def readspeed():
     GPIO.add_event_detect(ru_pin,GPIO.RISING,callback=my_ru_callback) #在引脚上添加上升临界值检测再回调
     GPIO.add_event_detect(rd_pin,GPIO.RISING,callback=my_rd_callback) #在引脚上添加上升临界值检测再回调
     
-    time.sleep(1)
+    time.sleep(0.05)
     print(lu_counter,ld_counter,ru_counter,rd_counter)
     GPIO.cleanup([lu_pin,ld_pin,ru_pin,rd_pin])   #释放gpio口
     return 0
+
 def serialEvent(str,Car_Speed):
     if str=='w':
         straight_car(Car_Speed)
@@ -254,6 +253,8 @@ def serialEvent(str,Car_Speed):
             print("Measured Distance = {:.2f} cm".format(dist))
         else:
             print("distance measure out of range")
+    elif str=='c':
+        run_flag = 1-run_flag
     else:
         print('no car command')
 
@@ -264,27 +265,38 @@ def serialEvent(str,Car_Speed):
     except :
         print('no steering command')
 
+def thread1_pid_control():
+    while(run_flag):
+        speed=readspeed()
+        
+def thread2_keyboard():
+    while(run_flag):
+        in_str = raw_input('请输入控制指令：')
+        #print(in_str,' direction recevied')
+        time.sleep(1)
+        if in_str=='c':
+            Car_Speed = int(raw_input('请输入速度：'))
+            in_str=pre_str
+        #print(Car_Speed,' car speed recevied')
+        time.sleep(1)
+        serialEvent(in_str,Car_Speed)
+        pre_str=in_str
 
 if __name__ == "__main__":
     try:
-
+        thread1 = threading.Thread(target = thread1_pid_control, args = ())
+        thread2 = threading.Thread(target = thread2_keyboard, args = ())
+        thread1.start()
+        thread2.start()        
         while True:
-            speed=readspeed()
-            in_str = raw_input('请输入控制指令：')
-            #print(in_str,' direction recevied')
-            time.sleep(1)
-            if in_str=='c':
-                Car_Speed = int(raw_input('请输入速度：'))
-                in_str=pre_str
-            #print(Car_Speed,' car speed recevied')
-            time.sleep(1)
-            serialEvent(in_str,Car_Speed)
-            pre_str=in_str
-
-
+            thread1.join()
+            thread2.join()
+            print(" return main  thread")
+            
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
         print("Measurement stopped by User")
+        
         GPIO.cleanup()
 
 
